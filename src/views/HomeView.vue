@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <main class="page page_home">
     <StartBox title="Flame Тестовое фронт"/>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
