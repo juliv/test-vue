@@ -24,7 +24,9 @@ export default defineComponent({
   },
   created() {
     if (!this.people.length) {
-      store.dispatch('addPeople');
+      store.dispatch('addPeople', {
+        loadAll: true,
+      });
     }
   },
 });

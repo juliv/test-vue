@@ -4,11 +4,13 @@ import {TPerson} from "@/types/types";
 import {swAPI} from "@/api/swapi";
 import {isNoData} from "@/api/axios/utilits";
 import {transformPerson} from "@/api/apiTransformers";
+import {getPageNumber} from "@/api/utilits";
+import {State, TActionAddPeoplePayload} from "@/store/types";
 
-export default createStore({
+export default createStore<State>({
   state: {
-    people: [] as TPerson[],
-    favorite: [] as number[], // связан с записями people
+    people: [],
+    favorite: [], // связан с записями people
   },
   getters: {
     getPeople(state) {
@@ -19,9 +21,9 @@ export default createStore({
     },
   },
   mutations: {
-    addPerson(state, payload: { person: TPerson, order: number }) {
-      if (state.people[payload.order] === undefined) {
-        state.people[payload.order] = { ...payload.person };
+    addPerson(state, person: TPerson) {
+      if (state.people[person.id] === undefined) {
+        state.people[person.id] = { ...person };
       }
     },
     addFavoritePerson(state, id: number) {
@@ -44,17 +46,22 @@ export default createStore({
     },
   },
   actions: {
-    addPeople({ commit }) {
-      swAPI.people()
+    addPeople({ commit, dispatch }, payload: TActionAddPeoplePayload = { loadAll: true, page: 1 }) {
+      swAPI.people(payload.page)
         .then(res => {
           if (!isNoData(res) && typeof res.results !== 'undefined') {
             res.results.forEach(item => {
-              const person = transformPerson(item);
-              commit('addPerson', {
-                person,
-                order: person.id,
-              });
+              commit('addPerson', transformPerson(item));
             });
+            if (payload.loadAll) {
+              const nextPage = getPageNumber(res.next);
+              if (nextPage) {
+                dispatch('addPeople', {
+                  loadAll: payload.loadAll,
+                  page: nextPage,
+                });
+              }
+            }
           }
         });
     },
@@ -62,11 +69,7 @@ export default createStore({
       swAPI.person(id)
         .then(res => {
           if (!isNoData(res)) {
-            const person = transformPerson(res);
-            commit('addPerson', {
-              person,
-              order: person.id,
-            });
+            commit('addPerson', transformPerson(res));
           }
         });
     },

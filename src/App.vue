@@ -21,6 +21,6 @@ import TopNav from "@/components/TopNav.vue";
   color: #2c3e50;
 }
 .container-page {
-  max-width: 40rem !important;
+  max-width: 46rem !important;
 }
 </style>
