@@ -9,9 +9,11 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
+import {defineComponent} from "vue";
 
-export default class TopNav extends Vue {}
+export default defineComponent({
+  name: 'TopNav',
+});
 </script>
 
 <style scoped lang="scss">

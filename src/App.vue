@@ -1,6 +1,10 @@
 <template>
-  <TopNav/>
-  <router-view/>
+  <div class="container container-page">
+    <TopNav/>
+    <main>
+      <router-view/>
+    </main>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -15,5 +19,8 @@ import TopNav from "@/components/TopNav.vue";
   text-align: center;
   padding: 0;
   color: #2c3e50;
+}
+.container-page {
+  max-width: 40rem !important;
 }
 </style>

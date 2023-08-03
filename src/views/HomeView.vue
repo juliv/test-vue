@@ -1,17 +1,21 @@
 <template>
-  <main class="page page_home">
-    <StartBox title="Flame Тестовое фронт"/>
-  </main>
+  <StartBox title="Flame Тестовое фронт"/>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import StartBox from '@/components/StartBox.vue';
+import {defineComponent} from "vue";
+import StartBox from "@/components/StartBox.vue";
+import store from "@/store";
 
-@Options({
+export default defineComponent({
+  name: 'HomeView',
   components: {
     StartBox,
   },
-})
-export default class HomeView extends Vue {}
+  computed: {
+    people() {
+      return store.getters.getFavorite;
+    },
+  },
+});
 </script>
