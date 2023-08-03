@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import HomeView from '@/views/HomeView.vue';
 import PeopleView from "@/views/PeopleView.vue";
 import PersonView from "@/views/PersonView.vue";
-import FavoriteView from "@/views/FavoriteView.vue";
+import PeopleFavoriteView from "@/views/PeopleFavoriteView.vue";
 import NotFoundView from "@/views/NotFoundView.vue";
 import {paths} from "@/router/paths";
 
@@ -21,11 +21,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/people/:id(\\d+)',
     name: paths.person,
     component: PersonView,
+    props: true,
   },
   {
     path: '/favorite',
     name: paths.favorite,
-    component: FavoriteView,
+    component: PeopleFavoriteView,
   },
   {
     path: '/:pathMatch(.*)*',

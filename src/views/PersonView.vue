@@ -1,8 +1,51 @@
 <template>
-  <main class="page page_person">
-    <h1>Персонаж #{{$route.params.id}}</h1>
+  <div>
+    <h1 class="mb-3">{{ person && person.name }}</h1>
     <div>
-      <em>Пусто</em>
+      <div class="text-center">
+        <router-link :to="{ name: 'people' }" class="btn btn-link">« К списку персонажей</router-link>
+      </div>
+      <template v-if="typeof person !== 'undefined'">
+        <PersonBox :person="person" />
+      </template>
     </div>
-  </main>
+  </div>
 </template>
+
+<script lang="ts">
+import {defineComponent} from "vue";
+import store from "@/store";
+import PersonBox from "@/components/PersonBox.vue";
+
+export default defineComponent({
+  components: {
+    PersonBox,
+  },
+  props: {
+    id: {
+      type: String,
+      required: true,
+    },
+  },
+  data() {
+    return {
+      personId: parseInt(this.id, 10),
+    };
+  },
+  computed: {
+    person() {
+      return this.getPerson();
+    },
+  },
+  created() {
+    if (typeof this.getPerson() === 'undefined') {
+      store.dispatch('addPerson', this.personId);
+    }
+  },
+  methods: {
+    getPerson() {
+      return store.state.people.find(item => item && item.id === this.personId);
+    },
+  },
+});
+</script>
