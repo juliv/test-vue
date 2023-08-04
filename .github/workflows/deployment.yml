@@ -1,0 +1,14 @@
+name: Deployment
+on: push
+jobs:
+  deployment:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository code
+        uses: actions/checkout@v3
+      - name: Install deps
+        run: npm ci
+      - name: EsLint code
+        run: npm run lint
+      - name: Build App
+        run: npm run build
